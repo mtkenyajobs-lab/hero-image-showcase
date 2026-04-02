@@ -29,8 +29,8 @@ const products = [
     badge: "Limited Time Offer Only",
   },
   {
-    name: "Klapp Folding Chair",
-    desc: "Klapp is a folding chair by the elegant and contemporary design. Made in multi-layered ash wood, this beautiful chair ston ...",
+    name: "Executive Desk B002",
+    desc: "Premium mahogany executive desk with matching bookcase. A statement piece for boardrooms and executive offices.",
     price: "$99",
     oldPrice: "$369",
     discount: "29% off",
