@@ -41,8 +41,8 @@ const products = [
   {
     name: "Side Chair",
     desc: "Bottween, di And Tradition Surface. Solid wood and foampressed veneer with upholstered seat.",
-    price: "₹899",
-    oldPrice: "₹3,499",
+    price: "$89",
+    oldPrice: "$349",
     discount: "76% off",
     rating: 4.1,
     image: prodChair4,
