@@ -1,9 +1,7 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Star, ArrowLeft, ArrowRight } from "lucide-react";
-import prodChair1 from "@/assets/prod-chair-ariel.png";
-import prodChair2 from "@/assets/prod-desk-lshaped.jpg";
-import prodChair3 from "@/assets/prod-exec-desk.png";
-import prodChair4 from "@/assets/prod-boardroom-table.png";
+import { products } from "@/data/products";
 
 const tabs = ["All", "Office Chairs", "Desks", "Conference Tables", "Lounge", "Storage", "Accessories"];
 
