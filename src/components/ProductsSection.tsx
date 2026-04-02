@@ -11,8 +11,8 @@ const products = [
   {
     name: "Ero|S| - Swivel Chair",
     desc: "The quality and richness of the materials used, both for the body and the base, make it particularly elegant and so ...",
-    price: "₹2,690",
-    oldPrice: "₹3,600",
+    price: "$269",
+    oldPrice: "$360",
     discount: "10% off",
     rating: 4.3,
     image: prodChair1,
