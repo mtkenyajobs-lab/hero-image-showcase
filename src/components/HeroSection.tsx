@@ -60,7 +60,7 @@ const HeroSection = () => {
       </div>
       <div className="absolute inset-0 bg-black/40" />
       <div className="container relative z-10 flex items-center min-h-screen py-12">
-        <div className="space-y-6 max-w-lg">
+        <div className="space-y-6 max-w-lg italic">
           <p className="text-sm font-medium text-white/70 tracking-wider uppercase">{slide.label}</p>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white">
             {slide.titleLine1}
