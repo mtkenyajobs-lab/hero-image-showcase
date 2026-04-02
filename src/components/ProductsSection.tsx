@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { Star, ArrowLeft, ArrowRight } from "lucide-react";
-import prodChair1 from "@/assets/prod-chair1.jpg";
-import prodChair2 from "@/assets/prod-chair2.jpg";
-import prodChair3 from "@/assets/prod-chair3.jpg";
-import prodChair4 from "@/assets/prod-chair4.jpg";
+import prodChair1 from "@/assets/prod-chair-ariel.png";
+import prodChair2 from "@/assets/prod-desk-lshaped.jpg";
+import prodChair3 from "@/assets/prod-exec-desk.png";
+import prodChair4 from "@/assets/prod-boardroom-table.png";
 
 const tabs = ["All", "Office Chairs", "Desks", "Conference Tables", "Lounge", "Storage", "Accessories"];
 
 const products = [
   {
-    name: "Ero|S| - Swivel Chair",
-    desc: "The quality and richness of the materials used, both for the body and the base, make it particularly elegant and so ...",
+    name: "Ariel MeshBack Swivel Chair",
+    desc: "Premium ergonomic mesh-back swivel chair with adjustable headrest, lumbar support and chrome base for ultimate comfort.",
     price: "$269",
     oldPrice: "$360",
     discount: "10% off",
@@ -19,8 +19,8 @@ const products = [
     badge: "50% Instant Discount Available",
   },
   {
-    name: "ID Mesh Office Chair",
-    desc: "ID Mesh is an office chair by Antonio Citterio for Vitra. Seat in polyurethane foam with woven fabric or ranged 3D upholstery.",
+    name: "Sit & Stand L-Shaped Desk",
+    desc: "Ergonomic height-adjustable L-shaped desk with walnut top and white frame. Perfect for modern offices and home workstations.",
     price: "$399",
     oldPrice: "$499",
     discount: "34% off",
@@ -29,8 +29,8 @@ const products = [
     badge: "Limited Time Offer Only",
   },
   {
-    name: "Klapp Folding Chair",
-    desc: "Klapp is a folding chair by the elegant and contemporary design. Made in multi-layered ash wood, this beautiful chair ston ...",
+    name: "Executive Desk B002",
+    desc: "Premium mahogany executive desk with matching bookcase. A statement piece for boardrooms and executive offices.",
     price: "$99",
     oldPrice: "$369",
     discount: "29% off",
@@ -39,8 +39,8 @@ const products = [
     badge: "Free Delivery Available",
   },
   {
-    name: "Side Chair",
-    desc: "Bottween, di And Tradition Surface. Solid wood and foampressed veneer with upholstered seat.",
+    name: "Oval Boardroom Table",
+    desc: "Elegant oval-shaped boardroom table seating 12+ with rich wood finish. Ideal for conference rooms and meeting spaces.",
     price: "$89",
     oldPrice: "$349",
     discount: "76% off",
