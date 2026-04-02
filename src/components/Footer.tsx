@@ -1,4 +1,4 @@
-import logo from "@/assets/logo.jpg";
+import logo from "@/assets/regal-logo-white.png";
 
 const footerLinks = {
   "Get to Know Us": ["About us", "Career", "Trending updates", "Services"],
