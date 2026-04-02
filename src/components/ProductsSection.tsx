@@ -5,7 +5,7 @@ import prodChair2 from "@/assets/prod-chair2.jpg";
 import prodChair3 from "@/assets/prod-chair3.jpg";
 import prodChair4 from "@/assets/prod-chair4.jpg";
 
-const tabs = ["All", "Chair", "Tables", "Sofa", "Beds", "Lamp", "Kitchen", "Garden", "Storage"];
+const tabs = ["All", "Office Chairs", "Desks", "Conference Tables", "Lounge", "Storage", "Accessories"];
 
 const products = [
   {
