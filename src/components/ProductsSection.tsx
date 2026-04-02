@@ -83,8 +83,8 @@ const ProductsSection = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
             {products.map((product) => (
               <div key={product.name} className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-shadow group">
-                <div className="bg-muted p-4 flex items-center justify-center aspect-square">
-                  <img src={product.image} alt={product.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform" loading="lazy" />
+                <div className="bg-muted flex items-center justify-center aspect-square overflow-hidden">
+                  <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />
                 </div>
                 <div className="p-4 space-y-2">
                   <h3 className="font-semibold text-sm">{product.name}</h3>
