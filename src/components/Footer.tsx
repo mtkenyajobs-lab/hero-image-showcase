@@ -9,7 +9,7 @@ const footerLinks = {
 
 const Footer = () => {
   return (
-    <footer className="bg-primary text-primary-foreground pt-12 pb-6">
+    <footer className="bg-footer-bg text-primary-foreground pt-12 pb-6">
       <div className="container">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-10">
           <div className="col-span-2 md:col-span-1">
