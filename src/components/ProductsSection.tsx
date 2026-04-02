@@ -9,8 +9,8 @@ const tabs = ["All", "Office Chairs", "Desks", "Conference Tables", "Lounge", "S
 
 const products = [
   {
-    name: "Ero|S| - Swivel Chair",
-    desc: "The quality and richness of the materials used, both for the body and the base, make it particularly elegant and so ...",
+    name: "Ariel MeshBack Swivel Chair",
+    desc: "Premium ergonomic mesh-back swivel chair with adjustable headrest, lumbar support and chrome base for ultimate comfort.",
     price: "$269",
     oldPrice: "$360",
     discount: "10% off",
