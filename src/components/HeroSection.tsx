@@ -13,7 +13,7 @@ const slides = [
     titleLine2: <><span className="font-display">LIVING </span><span className="font-display font-extrabold italic text-primary">SPACE</span></>,
     description: "The Fritz Hansen Chair JH5 is an exquisite piece of furniture that blends timeless design with comfort. With its elegant curves and ergonomic construction, offers a perfect balance of aesthetics and functionality.",
     product: "Fritz Hansen Chair JH5",
-    price: "₹ 20,000",
+    price: "$2,000",
   },
   {
     image: workstationImage,
@@ -23,7 +23,7 @@ const slides = [
     titleLine2: <><span className="font-display">WORK </span><span className="font-display font-extrabold italic text-primary">SETUP</span></>,
     description: "A complete ergonomic workstation designed for productivity and comfort. Premium desk, adjustable chair, and thoughtful accessories create the perfect workspace.",
     product: "Ergonomic Workstation Bundle",
-    price: "₹ 45,000",
+    price: "$4,500",
   },
 ];
 

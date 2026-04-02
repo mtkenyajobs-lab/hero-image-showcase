@@ -1,16 +1,16 @@
 import { Search, ShoppingCart, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/logo.jpg";
 
-const navItems = ["Home", "Trending", "Furnitures", "Services", "Contact us"];
+const navItems = ["Home", "Office Chairs", "Desks", "Conference", "Lounge", "Contact us"];
 
 const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 bg-card border-b border-border">
       <div className="container flex items-center justify-between h-16">
         <div className="flex items-center gap-10">
-          <a href="/" className="font-display text-2xl font-bold tracking-tight">
-            <span className="text-primary">H</span>
-            <span className="text-foreground">F</span>
+          <a href="/" className="flex items-center">
+            <img src={logo} alt="Regal Office & Home" className="h-10" />
           </a>
           <nav className="hidden md:flex items-center gap-6">
             {navItems.map((item, i) => (

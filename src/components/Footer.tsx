@@ -1,6 +1,8 @@
+import logo from "@/assets/logo.jpg";
+
 const footerLinks = {
   "Get to Know Us": ["About us", "Career", "Trending updates", "Services"],
-  Categories: ["Living Room Furniture", "Bedroom Furniture", "Dining Room Furniture", "Home Office Furniture", "Outdoor Furniture"],
+  Categories: ["Office Chairs", "Desks & Workstations", "Conference Tables", "Lounge & Reception", "Storage Solutions"],
   Help: ["Payments", "Shipping", "Cancellation & Returns", "FAQs"],
   "Connect with Us": ["Facebook", "Twitter", "Instagram", "Discord"],
 };
@@ -11,9 +13,7 @@ const Footer = () => {
       <div className="container">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-10">
           <div className="col-span-2 md:col-span-1">
-            <p className="font-display text-2xl font-bold mb-4">
-              <span className="text-primary">H</span>F
-            </p>
+            <img src={logo} alt="Regal Office & Home" className="h-10 mb-4 brightness-0 invert" />
             <p className="text-xs text-primary-foreground/60">Email: contact@hfus.com</p>
             <p className="text-xs text-primary-foreground/60">Live Chat Support</p>
           </div>
@@ -38,7 +38,7 @@ const Footer = () => {
             <a href="#" className="hover:text-primary-foreground underline">Terms and Conditions</a>
             <a href="#" className="hover:text-primary-foreground underline">Return Policy</a>
           </div>
-          <p className="text-xs text-primary-foreground/40">© 2023 HF Limited. All rights reserved</p>
+          <p className="text-xs text-primary-foreground/40">© 2025 Regal Office & Home. All rights reserved</p>
         </div>
       </div>
     </footer>

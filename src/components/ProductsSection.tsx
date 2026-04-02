@@ -5,14 +5,14 @@ import prodChair2 from "@/assets/prod-chair2.jpg";
 import prodChair3 from "@/assets/prod-chair3.jpg";
 import prodChair4 from "@/assets/prod-chair4.jpg";
 
-const tabs = ["All", "Chair", "Tables", "Sofa", "Beds", "Lamp", "Kitchen", "Garden", "Storage"];
+const tabs = ["All", "Office Chairs", "Desks", "Conference Tables", "Lounge", "Storage", "Accessories"];
 
 const products = [
   {
     name: "Ero|S| - Swivel Chair",
     desc: "The quality and richness of the materials used, both for the body and the base, make it particularly elegant and so ...",
-    price: "₹2,690",
-    oldPrice: "₹3,600",
+    price: "$269",
+    oldPrice: "$360",
     discount: "10% off",
     rating: 4.3,
     image: prodChair1,
@@ -21,8 +21,8 @@ const products = [
   {
     name: "ID Mesh Office Chair",
     desc: "ID Mesh is an office chair by Antonio Citterio for Vitra. Seat in polyurethane foam with woven fabric or ranged 3D upholstery.",
-    price: "₹3,999",
-    oldPrice: "₹4,999",
+    price: "$399",
+    oldPrice: "$499",
     discount: "34% off",
     rating: 4.5,
     image: prodChair2,
@@ -31,8 +31,8 @@ const products = [
   {
     name: "Klapp Folding Chair",
     desc: "Klapp is a folding chair by the elegant and contemporary design. Made in multi-layered ash wood, this beautiful chair ston ...",
-    price: "₹999",
-    oldPrice: "₹3,699",
+    price: "$99",
+    oldPrice: "$369",
     discount: "29% off",
     rating: 3.6,
     image: prodChair3,
@@ -41,8 +41,8 @@ const products = [
   {
     name: "Side Chair",
     desc: "Bottween, di And Tradition Surface. Solid wood and foampressed veneer with upholstered seat.",
-    price: "₹899",
-    oldPrice: "₹3,499",
+    price: "$89",
+    oldPrice: "$349",
     discount: "76% off",
     rating: 4.1,
     image: prodChair4,
@@ -52,7 +52,7 @@ const products = [
 ];
 
 const ProductsSection = () => {
-  const [activeTab, setActiveTab] = useState("Chair");
+  const [activeTab, setActiveTab] = useState("Office Chairs");
 
   return (
     <section className="py-16">

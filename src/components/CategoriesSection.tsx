@@ -6,11 +6,11 @@ import catOffice from "@/assets/cat-office.jpg";
 import catKitchen from "@/assets/cat-kitchen.jpg";
 
 const categories = [
-  { name: "Living Room", count: "450+ Items", image: catLiving, large: true },
-  { name: "Bed Room", count: "800+ Items", image: catBedroom, large: true },
-  { name: "Dining Room", count: "100+ Items", image: catDining },
-  { name: "Home Office", count: "300+ Items", image: catOffice },
-  { name: "Kitchen", count: "150+ Items", image: catKitchen },
+  { name: "Office Chairs", count: "450+ Items", image: catLiving },
+  { name: "Desks & Workstations", count: "300+ Items", image: catBedroom },
+  { name: "Conference & Meeting Tables", count: "100+ Items", image: catDining },
+  { name: "Lounge & Reception", count: "200+ Items", image: catOffice },
+  { name: "Storage Solutions", count: "150+ Items", image: catKitchen },
 ];
 
 const CategoriesSection = () => {
@@ -22,11 +22,10 @@ const CategoriesSection = () => {
           <h2 className="text-3xl md:text-4xl font-bold">
             Discover Our Unique Collections of
             <br />
-            Exclusive Categories.
+            Office & Home Furniture.
           </h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {/* Row 1: 3 large */}
           {categories.slice(0, 3).map((cat) => (
             <div key={cat.name} className="group relative rounded-xl overflow-hidden aspect-[4/3] cursor-pointer">
               <img src={cat.image} alt={cat.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
@@ -42,7 +41,6 @@ const CategoriesSection = () => {
               </div>
             </div>
           ))}
-          {/* Row 2: 2 items spanning 3 cols */}
           {categories.slice(3).map((cat) => (
             <div key={cat.name} className="group relative rounded-xl overflow-hidden aspect-[4/3] md:col-span-1 cursor-pointer col-span-1">
               <img src={cat.image} alt={cat.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
