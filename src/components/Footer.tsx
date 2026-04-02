@@ -11,9 +11,7 @@ const Footer = () => {
       <div className="container">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-10">
           <div className="col-span-2 md:col-span-1">
-            <p className="font-display text-2xl font-bold mb-4">
-              <span className="text-primary">H</span>F
-            </p>
+            <img src={logo} alt="Regal Office & Home" className="h-10 mb-4 brightness-0 invert" />
             <p className="text-xs text-primary-foreground/60">Email: contact@hfus.com</p>
             <p className="text-xs text-primary-foreground/60">Live Chat Support</p>
           </div>
