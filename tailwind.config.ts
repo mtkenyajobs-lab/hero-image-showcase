@@ -54,6 +54,7 @@ export default {
         hero: "hsl(var(--hero-bg))",
         sale: "hsl(var(--sale))",
         star: "hsl(var(--star))",
+        "footer-bg": "hsl(var(--footer-bg))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
