@@ -8,9 +8,8 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 bg-card border-b border-border">
       <div className="container flex items-center justify-between h-16">
         <div className="flex items-center gap-10">
-          <a href="/" className="font-display text-2xl font-bold tracking-tight">
-            <span className="text-primary">H</span>
-            <span className="text-foreground">F</span>
+          <a href="/" className="flex items-center">
+            <img src={logo} alt="Regal Office & Home" className="h-10" />
           </a>
           <nav className="hidden md:flex items-center gap-6">
             {navItems.map((item, i) => (
