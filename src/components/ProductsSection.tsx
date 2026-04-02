@@ -31,8 +31,8 @@ const products = [
   {
     name: "Klapp Folding Chair",
     desc: "Klapp is a folding chair by the elegant and contemporary design. Made in multi-layered ash wood, this beautiful chair ston ...",
-    price: "₹999",
-    oldPrice: "₹3,699",
+    price: "$99",
+    oldPrice: "$369",
     discount: "29% off",
     rating: 3.6,
     image: prodChair3,
