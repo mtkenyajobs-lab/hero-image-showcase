@@ -39,8 +39,8 @@ const products = [
     badge: "Free Delivery Available",
   },
   {
-    name: "Side Chair",
-    desc: "Bottween, di And Tradition Surface. Solid wood and foampressed veneer with upholstered seat.",
+    name: "Oval Boardroom Table",
+    desc: "Elegant oval-shaped boardroom table seating 12+ with rich wood finish. Ideal for conference rooms and meeting spaces.",
     price: "$89",
     oldPrice: "$349",
     discount: "76% off",
