@@ -19,8 +19,8 @@ const products = [
     badge: "50% Instant Discount Available",
   },
   {
-    name: "ID Mesh Office Chair",
-    desc: "ID Mesh is an office chair by Antonio Citterio for Vitra. Seat in polyurethane foam with woven fabric or ranged 3D upholstery.",
+    name: "Sit & Stand L-Shaped Desk",
+    desc: "Ergonomic height-adjustable L-shaped desk with walnut top and white frame. Perfect for modern offices and home workstations.",
     price: "$399",
     oldPrice: "$499",
     discount: "34% off",
