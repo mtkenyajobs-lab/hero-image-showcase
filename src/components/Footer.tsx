@@ -38,7 +38,7 @@ const Footer = () => {
             <a href="#" className="hover:text-primary-foreground underline">Terms and Conditions</a>
             <a href="#" className="hover:text-primary-foreground underline">Return Policy</a>
           </div>
-          <p className="text-xs text-primary-foreground/40">© 2023 HF Limited. All rights reserved</p>
+          <p className="text-xs text-primary-foreground/40">© 2025 Regal Office & Home. All rights reserved</p>
         </div>
       </div>
     </footer>
