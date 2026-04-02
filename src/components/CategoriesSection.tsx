@@ -1,16 +1,16 @@
 import { ExternalLink } from "lucide-react";
-import catLiving from "@/assets/cat-living-room.jpg";
-import catBedroom from "@/assets/cat-bedroom.jpg";
-import catDining from "@/assets/cat-dining.jpg";
-import catOffice from "@/assets/cat-office.jpg";
-import catKitchen from "@/assets/cat-kitchen.jpg";
+import catChair from "@/assets/prod-chair-ariel.png";
+import catDesk from "@/assets/prod-desk-lshaped.jpg";
+import catConference from "@/assets/prod-boardroom-table.png";
+import catLounge from "@/assets/cat-lounge.jpg";
+import catStorage from "@/assets/cat-storage.jpg";
 
 const categories = [
-  { name: "Office Chairs", count: "450+ Items", image: catLiving },
-  { name: "Desks & Workstations", count: "300+ Items", image: catBedroom },
-  { name: "Conference & Meeting Tables", count: "100+ Items", image: catDining },
-  { name: "Lounge & Reception", count: "200+ Items", image: catOffice },
-  { name: "Storage Solutions", count: "150+ Items", image: catKitchen },
+  { name: "Office Chairs", count: "450+ Items", image: catChair },
+  { name: "Desks & Workstations", count: "300+ Items", image: catDesk },
+  { name: "Conference & Meeting Tables", count: "100+ Items", image: catConference },
+  { name: "Lounge & Reception", count: "200+ Items", image: catLounge },
+  { name: "Storage Solutions", count: "150+ Items", image: catStorage },
 ];
 
 const CategoriesSection = () => {
