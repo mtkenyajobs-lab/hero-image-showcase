@@ -1,55 +1,9 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Star, ArrowLeft, ArrowRight } from "lucide-react";
-import prodChair1 from "@/assets/prod-chair-ariel.png";
-import prodChair2 from "@/assets/prod-desk-lshaped.jpg";
-import prodChair3 from "@/assets/prod-exec-desk.png";
-import prodChair4 from "@/assets/prod-boardroom-table.png";
+import { products } from "@/data/products";
 
 const tabs = ["All", "Office Chairs", "Desks", "Conference Tables", "Lounge", "Storage", "Accessories"];
-
-const products = [
-  {
-    name: "Ariel MeshBack Swivel Chair",
-    desc: "Premium ergonomic mesh-back swivel chair with adjustable headrest, lumbar support and chrome base for ultimate comfort.",
-    price: "$269",
-    oldPrice: "$360",
-    discount: "10% off",
-    rating: 4.3,
-    image: prodChair1,
-    badge: "50% Instant Discount Available",
-  },
-  {
-    name: "Sit & Stand L-Shaped Desk",
-    desc: "Ergonomic height-adjustable L-shaped desk with walnut top and white frame. Perfect for modern offices and home workstations.",
-    price: "$399",
-    oldPrice: "$499",
-    discount: "34% off",
-    rating: 4.5,
-    image: prodChair2,
-    badge: "Limited Time Offer Only",
-  },
-  {
-    name: "Executive Desk B002",
-    desc: "Premium mahogany executive desk with matching bookcase. A statement piece for boardrooms and executive offices.",
-    price: "$99",
-    oldPrice: "$369",
-    discount: "29% off",
-    rating: 3.6,
-    image: prodChair3,
-    badge: "Free Delivery Available",
-  },
-  {
-    name: "Oval Boardroom Table",
-    desc: "Elegant oval-shaped boardroom table seating 12+ with rich wood finish. Ideal for conference rooms and meeting spaces.",
-    price: "$89",
-    oldPrice: "$349",
-    discount: "76% off",
-    rating: 4.1,
-    image: prodChair4,
-    badge: "2 Only Left  Limited Stocks Only",
-    badgeUrgent: true,
-  },
-];
 
 const ProductsSection = () => {
   const [activeTab, setActiveTab] = useState("Office Chairs");
@@ -82,7 +36,11 @@ const ProductsSection = () => {
           </button>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
             {products.map((product) => (
-              <div key={product.name} className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-shadow group">
+              <Link
+                key={product.slug}
+                to={`/shop/${product.categorySlug}/${product.slug}`}
+                className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-shadow group"
+              >
                 <div className="bg-muted flex items-center justify-center aspect-square overflow-hidden">
                   <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />
                 </div>
@@ -102,7 +60,7 @@ const ProductsSection = () => {
                     {product.badge}
                   </p>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
