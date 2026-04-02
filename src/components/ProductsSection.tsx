@@ -21,8 +21,8 @@ const products = [
   {
     name: "ID Mesh Office Chair",
     desc: "ID Mesh is an office chair by Antonio Citterio for Vitra. Seat in polyurethane foam with woven fabric or ranged 3D upholstery.",
-    price: "₹3,999",
-    oldPrice: "₹4,999",
+    price: "$399",
+    oldPrice: "$499",
     discount: "34% off",
     rating: 4.5,
     image: prodChair2,
