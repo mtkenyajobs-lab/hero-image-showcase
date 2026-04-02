@@ -1,6 +1,8 @@
+import logo from "@/assets/logo.jpg";
+
 const footerLinks = {
   "Get to Know Us": ["About us", "Career", "Trending updates", "Services"],
-  Categories: ["Living Room Furniture", "Bedroom Furniture", "Dining Room Furniture", "Home Office Furniture", "Outdoor Furniture"],
+  Categories: ["Office Chairs", "Desks & Workstations", "Conference Tables", "Lounge & Reception", "Storage Solutions"],
   Help: ["Payments", "Shipping", "Cancellation & Returns", "FAQs"],
   "Connect with Us": ["Facebook", "Twitter", "Instagram", "Discord"],
 };

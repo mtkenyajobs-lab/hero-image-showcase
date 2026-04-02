@@ -23,7 +23,7 @@ const slides = [
     titleLine2: <><span className="font-display">WORK </span><span className="font-display font-extrabold italic text-primary">SETUP</span></>,
     description: "A complete ergonomic workstation designed for productivity and comfort. Premium desk, adjustable chair, and thoughtful accessories create the perfect workspace.",
     product: "Ergonomic Workstation Bundle",
-    price: "₹ 45,000",
+    price: "$4,500",
   },
 ];
 

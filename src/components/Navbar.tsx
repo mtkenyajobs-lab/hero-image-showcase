@@ -2,7 +2,7 @@ import { Search, ShoppingCart, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.jpg";
 
-const navItems = ["Home", "Trending", "Furnitures", "Services", "Contact us"];
+const navItems = ["Home", "Office Chairs", "Desks", "Conference", "Lounge", "Contact us"];
 
 const Navbar = () => {
   return (

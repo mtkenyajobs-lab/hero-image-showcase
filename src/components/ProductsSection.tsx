@@ -52,7 +52,7 @@ const products = [
 ];
 
 const ProductsSection = () => {
-  const [activeTab, setActiveTab] = useState("Chair");
+  const [activeTab, setActiveTab] = useState("Office Chairs");
 
   return (
     <section className="py-16">
