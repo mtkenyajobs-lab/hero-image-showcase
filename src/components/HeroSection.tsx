@@ -9,8 +9,8 @@ const slides = [
     image: heroImage,
     alt: "Man sitting in a premium office chair",
     label: "Deal of the Day",
-    titleLine1: <><span className="font-display font-extrabold italic">ELEVATE</span> <span className="font-display">YOUR</span></>,
-    titleLine2: <><span className="font-display">WORK </span><span className="font-display font-extrabold italic text-mustard">SPACE</span></>,
+    titleLine1: <><span className="font-display font-extrabold">ELEVATE</span> <span className="font-display">YOUR</span></>,
+    titleLine2: <><span className="font-display">WORK </span><span className="font-display font-extrabold text-mustard">SPACE</span></>,
     description: "The Ariel MeshBack Swivel Chair is a modern, stylish task chair designed for home or commercial offices, featuring a breathable mesh back, padded mesh seat, and fixed loop arms. It offers ergonomic support with integrated lumbar shaping, a single-lever tilt mechanism, and height adjustment, supporting up to 150kg (23.5 stone) and designed for 8-hour daily use.",
     product: "Ariel MeshBack Swivel Chair",
     price: "$500",
@@ -19,8 +19,8 @@ const slides = [
     image: workstationImage,
     alt: "Modern ergonomic workstation setup",
     label: "New Arrival",
-    titleLine1: <><span className="font-display font-extrabold italic">ELEVATE</span> <span className="font-display">YOUR</span></>,
-    titleLine2: <><span className="font-display">WORK </span><span className="font-display font-extrabold italic text-mustard">SETUP</span></>,
+    titleLine1: <><span className="font-display font-extrabold">ELEVATE</span> <span className="font-display">YOUR</span></>,
+    titleLine2: <><span className="font-display">WORK </span><span className="font-display font-extrabold text-mustard">SETUP</span></>,
     description: "A complete ergonomic workstation designed for productivity and comfort. Premium desk, adjustable chair, and thoughtful accessories create the perfect workspace.",
     product: "Ergonomic Workstation Bundle",
     price: "$4,500",
@@ -60,7 +60,7 @@ const HeroSection = () => {
       </div>
       <div className="absolute inset-0 bg-black/40" />
       <div className="container relative z-10 flex items-center min-h-screen py-12">
-        <div className="space-y-6 max-w-lg italic">
+        <div className="space-y-6 max-w-lg">
           <p className="text-sm font-medium text-white/70 tracking-wider uppercase">{slide.label}</p>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white">
             {slide.titleLine1}
