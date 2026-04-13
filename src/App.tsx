@@ -7,6 +7,7 @@ import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import ProductDetail from "./pages/ProductDetail.tsx";
 import RequestQuote from "./pages/RequestQuote.tsx";
+import CategoryPage from "./pages/CategoryPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -18,6 +19,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/shop/:category" element={<CategoryPage />} />
           <Route path="/shop/:category/:slug" element={<ProductDetail />} />
           <Route path="/request-a-quote" element={<RequestQuote />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
