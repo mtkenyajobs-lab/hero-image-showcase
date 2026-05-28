@@ -9,6 +9,7 @@ import ProductDetail from "./pages/ProductDetail.tsx";
 import RequestQuote from "./pages/RequestQuote.tsx";
 import CategoryPage from "./pages/CategoryPage.tsx";
 import Auth from "./pages/Auth.tsx";
+import Dashboard from "./pages/Dashboard.tsx";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/shop/:category/:slug" element={<ProductDetail />} />
           <Route path="/request-a-quote" element={<RequestQuote />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

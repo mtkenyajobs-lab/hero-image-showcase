@@ -21,14 +21,15 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
+  const [accountType, setAccountType] = useState<"client" | "admin">("client");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate("/", { replace: true });
+      if (data.session) navigate("/dashboard", { replace: true });
     });
     const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
-      if (session) navigate("/", { replace: true });
+      if (session) navigate("/dashboard", { replace: true });
     });
     return () => sub.subscription.unsubscribe();
   }, [navigate]);
@@ -47,8 +48,11 @@ const Auth = () => {
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/`,
-            data: { display_name: displayName || email.split("@")[0] },
+            emailRedirectTo: `${window.location.origin}/dashboard`,
+            data: {
+              display_name: displayName || email.split("@")[0],
+              role: accountType,
+            },
           },
         });
         if (error) throw error;
@@ -132,6 +136,27 @@ const Auth = () => {
                 placeholder="Your name"
                 maxLength={60}
               />
+            </div>
+          )}
+          {mode === "signup" && (
+            <div>
+              <Label>Account type</Label>
+              <div className="grid grid-cols-2 gap-2 mt-1.5">
+                {(["client", "admin"] as const).map((opt) => (
+                  <button
+                    type="button"
+                    key={opt}
+                    onClick={() => setAccountType(opt)}
+                    className={`px-3 py-2.5 rounded-lg border text-sm font-medium capitalize transition-colors ${
+                      accountType === opt
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-border text-muted-foreground hover:bg-muted"
+                    }`}
+                  >
+                    {opt}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
           <div>
