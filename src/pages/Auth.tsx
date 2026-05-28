@@ -138,6 +138,27 @@ const Auth = () => {
               />
             </div>
           )}
+          {mode === "signup" && (
+            <div>
+              <Label>Account type</Label>
+              <div className="grid grid-cols-2 gap-2 mt-1.5">
+                {(["client", "admin"] as const).map((opt) => (
+                  <button
+                    type="button"
+                    key={opt}
+                    onClick={() => setAccountType(opt)}
+                    className={`px-3 py-2.5 rounded-lg border text-sm font-medium capitalize transition-colors ${
+                      accountType === opt
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-border text-muted-foreground hover:bg-muted"
+                    }`}
+                  >
+                    {opt}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
           <div>
             <Label htmlFor="email">Email</Label>
             <Input
