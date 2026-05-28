@@ -1,6 +1,7 @@
-import { Search, ShoppingCart, User } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { LogOut, Search, ShoppingCart, User } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
 import logo from "@/assets/logo.jpg";
 
 const navItems: { label: string; to: string }[] = [
