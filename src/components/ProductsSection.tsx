@@ -3,10 +3,22 @@ import { Link } from "react-router-dom";
 import { Star, ArrowLeft, ArrowRight } from "lucide-react";
 import { products } from "@/data/products";
 
-const tabs = ["All", "Office Chairs", "Desks", "Conference Tables", "Lounge", "Storage", "Accessories"];
+const tabs: { label: string; slug: string | null }[] = [
+  { label: "All", slug: null },
+  { label: "Office Chairs", slug: "office-chairs" },
+  { label: "Desks", slug: "desks-workstations" },
+  { label: "Conference Tables", slug: "conference-tables" },
+  { label: "Lounge", slug: "lounge-reception" },
+  { label: "Storage", slug: "storage-solutions" },
+  { label: "Accessories", slug: "accessories" },
+];
 
 const ProductsSection = () => {
   const [activeTab, setActiveTab] = useState("Office Chairs");
+  const activeSlug = tabs.find((t) => t.label === activeTab)?.slug ?? null;
+  const visibleProducts = activeSlug
+    ? products.filter((p) => p.categorySlug === activeSlug)
+    : products;
 
   return (
     <section className="py-16">
