@@ -47,7 +47,9 @@ const ProductsSection = () => {
             <ArrowRight className="w-5 h-5" />
           </button>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-            {products.map((product) => (
+            {visibleProducts.length === 0 ? (
+              <p className="col-span-full text-center text-muted-foreground py-10">No products in this category yet.</p>
+            ) : visibleProducts.map((product) => (
               <Link
                 key={product.slug}
                 to={`/shop/${product.categorySlug}/${product.slug}`}
