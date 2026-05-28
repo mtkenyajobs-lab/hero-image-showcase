@@ -16,6 +16,8 @@ const navItems: { label: string; to: string }[] = [
 
 const Navbar = () => {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
   return (
     <header className="sticky top-0 z-50 bg-card border-b border-border">
       <div className="container flex items-center justify-between h-16">
@@ -44,18 +46,40 @@ const Navbar = () => {
           </nav>
         </div>
         <div className="flex items-center gap-4">
-          <button className="text-foreground hover:text-primary transition-colors">
+          <button className="text-foreground hover:text-primary transition-colors" aria-label="Search">
             <Search className="w-5 h-5" />
           </button>
-          <button className="text-foreground hover:text-primary transition-colors">
+          <button className="text-foreground hover:text-primary transition-colors" aria-label="Cart">
             <ShoppingCart className="w-5 h-5" />
           </button>
-          <button className="text-foreground hover:text-primary transition-colors">
-            <User className="w-5 h-5" />
-          </button>
-          <Button size="sm" className="hidden sm:inline-flex rounded-full px-5">
-            Sign up
-          </Button>
+          {user ? (
+            <>
+              <Link to="/" className="text-foreground hover:text-primary transition-colors" aria-label="Account">
+                <User className="w-5 h-5" />
+              </Link>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={async () => { await signOut(); navigate("/"); }}
+                className="hidden sm:inline-flex rounded-full px-5 gap-2"
+              >
+                <LogOut className="w-4 h-4" /> Sign out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link to="/auth" className="text-foreground hover:text-primary transition-colors" aria-label="Sign in">
+                <User className="w-5 h-5" />
+              </Link>
+              <Button
+                size="sm"
+                onClick={() => navigate("/auth")}
+                className="hidden sm:inline-flex rounded-full px-5"
+              >
+                Sign up
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </header>
