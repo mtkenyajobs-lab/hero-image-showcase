@@ -21,14 +21,15 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
+  const [accountType, setAccountType] = useState<"client" | "admin">("client");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate("/", { replace: true });
+      if (data.session) navigate("/dashboard", { replace: true });
     });
     const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
-      if (session) navigate("/", { replace: true });
+      if (session) navigate("/dashboard", { replace: true });
     });
     return () => sub.subscription.unsubscribe();
   }, [navigate]);
@@ -47,8 +48,11 @@ const Auth = () => {
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/`,
-            data: { display_name: displayName || email.split("@")[0] },
+            emailRedirectTo: `${window.location.origin}/dashboard`,
+            data: {
+              display_name: displayName || email.split("@")[0],
+              role: accountType,
+            },
           },
         });
         if (error) throw error;
