@@ -27,15 +27,15 @@ const ProductsSection = () => {
         <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
           {tabs.map((tab) => (
             <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
+              key={tab.label}
+              onClick={() => setActiveTab(tab.label)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                activeTab === tab
+                activeTab === tab.label
                   ? "bg-foreground text-background"
                   : "border border-border text-muted-foreground hover:bg-muted"
               }`}
             >
-              {tab}
+              {tab.label}
             </button>
           ))}
         </div>
