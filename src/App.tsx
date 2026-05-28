@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound.tsx";
 import ProductDetail from "./pages/ProductDetail.tsx";
 import RequestQuote from "./pages/RequestQuote.tsx";
 import CategoryPage from "./pages/CategoryPage.tsx";
+import Auth from "./pages/Auth.tsx";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/shop/:category" element={<CategoryPage />} />
           <Route path="/shop/:category/:slug" element={<ProductDetail />} />
           <Route path="/request-a-quote" element={<RequestQuote />} />
+          <Route path="/auth" element={<Auth />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
