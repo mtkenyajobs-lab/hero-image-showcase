@@ -54,14 +54,21 @@ const Navbar = () => {
           </button>
           {user ? (
             <>
-              <Link to="/" className="text-foreground hover:text-primary transition-colors" aria-label="Account">
+              <Link to="/dashboard" className="text-foreground hover:text-primary transition-colors" aria-label="Dashboard">
                 <User className="w-5 h-5" />
               </Link>
               <Button
                 size="sm"
+                onClick={() => navigate("/dashboard")}
+                className="hidden sm:inline-flex rounded-full px-5"
+              >
+                Dashboard
+              </Button>
+              <Button
+                size="sm"
                 variant="outline"
                 onClick={async () => { await signOut(); navigate("/"); }}
-                className="hidden sm:inline-flex rounded-full px-5 gap-2"
+                className="hidden md:inline-flex rounded-full px-4 gap-2"
               >
                 <LogOut className="w-4 h-4" /> Sign out
               </Button>
