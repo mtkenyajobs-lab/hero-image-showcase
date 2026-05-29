@@ -14,6 +14,84 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_products: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          image_url: string | null
+          name: string
+          price: number
+          stock: number
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          price?: number
+          stock?: number
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          price?: number
+          stock?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      orders: {
+        Row: {
+          created_at: string
+          customer_email: string
+          customer_name: string
+          id: string
+          product_name: string
+          quantity: number
+          status: string
+          total: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          customer_email: string
+          customer_name: string
+          id?: string
+          product_name: string
+          quantity?: number
+          status?: string
+          total?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          customer_email?: string
+          customer_name?: string
+          id?: string
+          product_name?: string
+          quantity?: number
+          status?: string
+          total?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
