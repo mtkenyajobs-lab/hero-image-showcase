@@ -146,10 +146,41 @@ const ProductsModule = ({ mode }: { mode: "manage" | "view" }) => {
           <h3 className="font-semibold">{editingId ? "Edit product" : "Add new product"}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div><Label>Name</Label><Input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} /></div>
-            <div><Label>Category</Label><Input required value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} /></div>
+            <div>
+              <Label>Category</Label>
+              <select
+                required
+                value={form.category}
+                onChange={(e) => setForm({ ...form, category: e.target.value })}
+                className="w-full bg-background border border-border rounded h-10 px-3"
+              >
+                <option value="">Select category</option>
+                {categories.map((c) => (
+                  <option key={c.slug} value={c.slug}>{c.name}</option>
+                ))}
+              </select>
+            </div>
             <div><Label>Price (USD)</Label><Input required type="number" step="0.01" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} /></div>
             <div><Label>Stock</Label><Input type="number" value={form.stock} onChange={(e) => setForm({ ...form, stock: e.target.value })} /></div>
-            <div className="md:col-span-2"><Label>Image URL</Label><Input value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} /></div>
+            <div className="md:col-span-2">
+              <Label>Product image</Label>
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={(e) => { const f = e.target.files?.[0]; if (f) handleUpload(f); }}
+                disabled={uploading}
+              />
+              {uploading && <p className="text-xs text-muted-foreground mt-1">Uploading...</p>}
+              {form.image_url && (
+                <div className="mt-2 flex items-center gap-3">
+                  <img src={form.image_url} alt="preview" className="w-16 h-16 object-cover rounded border border-border" />
+                  <Input className="flex-1" value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} placeholder="Image URL" />
+                </div>
+              )}
+              {!form.image_url && (
+                <Input className="mt-2" value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} placeholder="Or paste an image URL" />
+              )}
+            </div>
             <div className="md:col-span-2"><Label>Description</Label><Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} /></div>
           </div>
           <div className="flex gap-3">
