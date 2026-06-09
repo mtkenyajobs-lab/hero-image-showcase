@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Star, ArrowLeft, ArrowRight } from "lucide-react";
 import { products } from "@/data/products";
+import { useAdminProducts } from "@/hooks/useAdminProducts";
 
 const tabs: { label: string; slug: string | null }[] = [
   { label: "All", slug: null },
@@ -16,9 +17,11 @@ const tabs: { label: string; slug: string | null }[] = [
 const ProductsSection = () => {
   const [activeTab, setActiveTab] = useState("Office Chairs");
   const activeSlug = tabs.find((t) => t.label === activeTab)?.slug ?? null;
+  const adminProducts = useAdminProducts();
+  const allProducts = useMemo(() => [...adminProducts, ...products], [adminProducts]);
   const visibleProducts = activeSlug
-    ? products.filter((p) => p.categorySlug === activeSlug)
-    : products;
+    ? allProducts.filter((p) => p.categorySlug === activeSlug)
+    : allProducts;
 
   return (
     <section className="py-16">
