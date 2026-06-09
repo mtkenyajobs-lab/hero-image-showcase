@@ -11,6 +11,7 @@ import {
   getPriceRange,
   categories,
 } from "@/data/products";
+import { useAdminProducts } from "@/hooks/useAdminProducts";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
@@ -35,7 +36,12 @@ type SortOption = "default" | "price-asc" | "price-desc" | "rating" | "name";
 const CategoryPage = () => {
   const { category } = useParams<{ category: string }>();
   const cat = getCategoryBySlug(category || "");
-  const allProducts = getProductsByCategory(category || "");
+  const staticProducts = getProductsByCategory(category || "");
+  const adminProducts = useAdminProducts();
+  const allProducts = useMemo(
+    () => [...adminProducts.filter((p) => p.categorySlug === category), ...staticProducts],
+    [adminProducts, staticProducts, category]
+  );
 
   const materials = getAllMaterials();
   const colours = getAllColours();
