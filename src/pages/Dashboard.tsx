@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { categories } from "@/data/products";
 
 type AdminProduct = {
   id: string;
@@ -65,6 +66,7 @@ const ProductsModule = ({ mode }: { mode: "manage" | "view" }) => {
   const [form, setForm] = useState(emptyForm);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   const load = async () => {
     const { data, error } = await supabase
@@ -78,6 +80,23 @@ const ProductsModule = ({ mode }: { mode: "manage" | "view" }) => {
   useEffect(() => { load(); }, []);
 
   const reset = () => { setForm(emptyForm); setEditingId(null); };
+
+  const handleUpload = async (file: File) => {
+    setUploading(true);
+    const ext = file.name.split(".").pop() || "jpg";
+    const path = `${crypto.randomUUID()}.${ext}`;
+    const { error: upErr } = await supabase.storage
+      .from("product-images")
+      .upload(path, file, { cacheControl: "3600", upsert: false });
+    if (upErr) { setUploading(false); return toast.error(upErr.message); }
+    const { data: signed, error: sErr } = await supabase.storage
+      .from("product-images")
+      .createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
+    setUploading(false);
+    if (sErr || !signed) return toast.error(sErr?.message ?? "Failed to get URL");
+    setForm((f) => ({ ...f, image_url: signed.signedUrl }));
+    toast.success("Image uploaded");
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
