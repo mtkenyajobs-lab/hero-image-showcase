@@ -4,12 +4,30 @@ import { Star, ShoppingCart, MessageCircle, FileText, ChevronRight, Truck, Shiel
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { getProductBySlug, getRelatedProducts, type Product } from "@/data/products";
+import { supabase } from "@/integrations/supabase/client";
+import { adminRowToProduct, type AdminProductRow } from "@/hooks/useAdminProducts";
 
 const ProductDetail = () => {
   const { slug } = useParams<{ category: string; slug: string }>();
-  const product = slug ? getProductBySlug(slug) : undefined;
+  const staticProduct = slug ? getProductBySlug(slug) : undefined;
+  const [adminProduct, setAdminProduct] = useState<Product | undefined>();
+  const product = staticProduct ?? adminProduct;
   const [selectedImage, setSelectedImage] = useState(0);
   const [recentlyViewed, setRecentlyViewed] = useState<Product[]>([]);
+
+  useEffect(() => {
+    if (staticProduct || !slug) return;
+    // Try fetching from admin_products by id (admin slug = id)
+    supabase
+      .from("admin_products")
+      .select("*")
+      .eq("id", slug)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data) setAdminProduct(adminRowToProduct(data as AdminProductRow));
+      });
+  }, [slug, staticProduct]);
+
 
   useEffect(() => {
     if (!product) return;
