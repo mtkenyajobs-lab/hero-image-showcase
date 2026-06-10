@@ -175,6 +175,44 @@ export type Database = {
         }
         Relationships: []
       }
+      sales: {
+        Row: {
+          amount: number
+          channel: string
+          created_at: string
+          id: string
+          product_id: string | null
+          product_name: string
+          user_id: string | null
+        }
+        Insert: {
+          amount?: number
+          channel?: string
+          created_at?: string
+          id?: string
+          product_id?: string | null
+          product_name: string
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          channel?: string
+          created_at?: string
+          id?: string
+          product_id?: string | null
+          product_name?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sales_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "admin_products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
