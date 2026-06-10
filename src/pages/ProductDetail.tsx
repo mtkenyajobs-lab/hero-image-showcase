@@ -4,18 +4,24 @@ import { Star, ShoppingCart, MessageCircle, FileText, ChevronRight, Truck, Shiel
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { getProductBySlug, getRelatedProducts, type Product } from "@/data/products";
+import { trackVisit, trackSale, createOrder } from "@/lib/tracking";
+import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
 
 const ProductDetail = () => {
   const { slug } = useParams<{ category: string; slug: string }>();
   const product = slug ? getProductBySlug(slug) : undefined;
   const [selectedImage, setSelectedImage] = useState(0);
   const [recentlyViewed, setRecentlyViewed] = useState<Product[]>([]);
+  const [placing, setPlacing] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     if (!product) return;
     const stored = JSON.parse(localStorage.getItem("recentlyViewed") || "[]") as string[];
     const updated = [product.slug, ...stored.filter((s) => s !== product.slug)].slice(0, 6);
     localStorage.setItem("recentlyViewed", JSON.stringify(updated));
+    trackVisit({ productName: product.name, path: `/shop/${product.categorySlug}/${product.slug}` });
   }, [product]);
 
   useEffect(() => {
@@ -129,9 +135,32 @@ const ProductDetail = () => {
 
             {/* CTA Buttons */}
             <div className="space-y-3">
-              <button className="w-full bg-primary text-primary-foreground py-3.5 rounded-xl font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+              <button
+                disabled={placing}
+                onClick={async () => {
+                  const name = (user?.user_metadata?.display_name as string) || user?.email?.split("@")[0] || prompt("Your name?") || "";
+                  if (!name) return;
+                  const email = user?.email || prompt("Your email?") || "";
+                  if (!email) return;
+                  setPlacing(true);
+                  try {
+                    await createOrder({
+                      customerName: name,
+                      customerEmail: email,
+                      productName: product.name,
+                      total: product.priceNum,
+                    });
+                    toast.success("Order placed! We'll be in touch shortly.");
+                  } catch (e: any) {
+                    toast.error(e.message ?? "Could not place order");
+                  } finally {
+                    setPlacing(false);
+                  }
+                }}
+                className="w-full bg-primary text-primary-foreground py-3.5 rounded-xl font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-60"
+              >
                 <ShoppingCart className="w-5 h-5" />
-                Buy Now
+                {placing ? "Placing order..." : "Buy Now"}
               </button>
               <div className="grid grid-cols-2 gap-3">
                 <Link
@@ -145,6 +174,7 @@ const ProductDetail = () => {
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackSale({ productName: product.name, amount: product.priceNum })}
                   className="border-2 border-green-600 text-green-600 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-green-50 transition-colors"
                 >
                   <MessageCircle className="w-5 h-5" />
