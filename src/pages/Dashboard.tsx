@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -9,7 +9,6 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { categories } from "@/data/products";
 
 type AdminProduct = {
   id: string;
@@ -39,6 +38,13 @@ type UserRow = {
   role?: string;
 };
 
+type Category = {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+};
+
 const ClientDashboard = ({ name }: { name: string }) => (
   <div className="space-y-6">
     <div>
@@ -59,14 +65,34 @@ const ClientDashboard = ({ name }: { name: string }) => (
   </div>
 );
 
+const slugify = (s: string) =>
+  s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+const useCategories = () => {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const load = async () => {
+    const { data, error } = await supabase
+      .from("categories")
+      .select("*")
+      .order("name", { ascending: true });
+    if (error) return toast.error(error.message);
+    setCategories((data ?? []) as Category[]);
+  };
+  useEffect(() => { load(); }, []);
+  return { categories, reload: load };
+};
+
 const emptyForm = { name: "", category: "", price: "", description: "", image_url: "", stock: "" };
 
 const ProductsModule = ({ mode }: { mode: "manage" | "view" }) => {
+  const { categories } = useCategories();
   const [items, setItems] = useState<AdminProduct[]>([]);
   const [form, setForm] = useState(emptyForm);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
+  const cameraRef = useRef<HTMLInputElement>(null);
 
   const load = async () => {
     const { data, error } = await supabase
@@ -83,19 +109,19 @@ const ProductsModule = ({ mode }: { mode: "manage" | "view" }) => {
 
   const handleUpload = async (file: File) => {
     setUploading(true);
-    const ext = file.name.split(".").pop() || "jpg";
-    const path = `${crypto.randomUUID()}.${ext}`;
-    const { error: upErr } = await supabase.storage
-      .from("product-images")
-      .upload(path, file, { cacheControl: "3600", upsert: false });
-    if (upErr) { setUploading(false); return toast.error(upErr.message); }
-    const { data: signed, error: sErr } = await supabase.storage
-      .from("product-images")
-      .createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
-    setUploading(false);
-    if (sErr || !signed) return toast.error(sErr?.message ?? "Failed to get URL");
-    setForm((f) => ({ ...f, image_url: signed.signedUrl }));
-    toast.success("Image uploaded");
+    try {
+      const ext = file.name.split(".").pop() || "jpg";
+      const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+      const { error } = await supabase.storage.from("product-images").upload(path, file);
+      if (error) throw error;
+      const { data: signed } = await supabase.storage.from("product-images").createSignedUrl(path, 60 * 60 * 24 * 365 * 5);
+      if (signed?.signedUrl) setForm((f) => ({ ...f, image_url: signed.signedUrl }));
+      toast.success("Image uploaded");
+    } catch (e: any) {
+      toast.error(e.message ?? "Upload failed");
+    } finally {
+      setUploading(false);
+    }
   };
 
   const submit = async (e: React.FormEvent) => {
@@ -156,31 +182,34 @@ const ProductsModule = ({ mode }: { mode: "manage" | "view" }) => {
               >
                 <option value="">Select category</option>
                 {categories.map((c) => (
-                  <option key={c.slug} value={c.slug}>{c.name}</option>
+                  <option key={c.id} value={c.slug}>{c.name}</option>
                 ))}
               </select>
+              {categories.length === 0 && (
+                <p className="text-xs text-muted-foreground mt-1">No categories yet — add one in the Categories tab.</p>
+              )}
             </div>
             <div><Label>Price (USD)</Label><Input required type="number" step="0.01" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} /></div>
             <div><Label>Stock</Label><Input type="number" value={form.stock} onChange={(e) => setForm({ ...form, stock: e.target.value })} /></div>
-            <div className="md:col-span-2">
+
+            <div className="md:col-span-2 space-y-2">
               <Label>Product image</Label>
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={(e) => { const f = e.target.files?.[0]; if (f) handleUpload(f); }}
-                disabled={uploading}
-              />
-              {uploading && <p className="text-xs text-muted-foreground mt-1">Uploading...</p>}
+              <div className="flex flex-wrap gap-2">
+                <input ref={fileRef} type="file" accept="image/*" hidden onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0])} />
+                <input ref={cameraRef} type="file" accept="image/*" capture="environment" hidden onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0])} />
+                <Button type="button" variant="outline" disabled={uploading} onClick={() => fileRef.current?.click()}>
+                  {uploading ? "Uploading..." : "Choose file"}
+                </Button>
+                <Button type="button" variant="outline" disabled={uploading} onClick={() => cameraRef.current?.click()}>
+                  Take photo
+                </Button>
+              </div>
+              <Input placeholder="Or paste image URL" value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} />
               {form.image_url && (
-                <div className="mt-2 flex items-center gap-3">
-                  <img src={form.image_url} alt="preview" className="w-16 h-16 object-cover rounded border border-border" />
-                  <Input className="flex-1" value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} placeholder="Image URL" />
-                </div>
-              )}
-              {!form.image_url && (
-                <Input className="mt-2" value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} placeholder="Or paste an image URL" />
+                <img src={form.image_url} alt="Preview" className="h-24 w-24 object-cover rounded border border-border" />
               )}
             </div>
+
             <div className="md:col-span-2"><Label>Description</Label><Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} /></div>
           </div>
           <div className="flex gap-3">
@@ -217,6 +246,89 @@ const ProductsModule = ({ mode }: { mode: "manage" | "view" }) => {
                     <Button size="sm" variant="destructive" onClick={() => remove(p.id)}>Delete</Button>
                   </td>
                 )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+const CategoriesModule = () => {
+  const { categories, reload } = useCategories();
+  const [form, setForm] = useState({ name: "", slug: "", description: "" });
+  const [editingId, setEditingId] = useState<string | null>(null);
+
+  const reset = () => { setForm({ name: "", slug: "", description: "" }); setEditingId(null); };
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const payload = {
+      name: form.name.trim(),
+      slug: (form.slug || slugify(form.name)).trim(),
+      description: form.description || null,
+    };
+    const { error } = editingId
+      ? await supabase.from("categories").update(payload).eq("id", editingId)
+      : await supabase.from("categories").insert(payload);
+    if (error) return toast.error(error.message);
+    toast.success(editingId ? "Category updated" : "Category added");
+    reset();
+    reload();
+  };
+
+  const edit = (c: Category) => {
+    setEditingId(c.id);
+    setForm({ name: c.name, slug: c.slug, description: c.description ?? "" });
+  };
+
+  const remove = async (id: string) => {
+    if (!confirm("Delete this category?")) return;
+    const { error } = await supabase.from("categories").delete().eq("id", id);
+    if (error) return toast.error(error.message);
+    toast.success("Category deleted");
+    reload();
+  };
+
+  return (
+    <div className="space-y-6">
+      <form onSubmit={submit} className="border border-border rounded-xl p-6 bg-card space-y-4">
+        <h3 className="font-semibold">{editingId ? "Edit category" : "Add new category"}</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div><Label>Name</Label><Input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value, slug: editingId ? form.slug : slugify(e.target.value) })} /></div>
+          <div><Label>Slug</Label><Input required value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} /></div>
+          <div className="md:col-span-2"><Label>Description</Label><Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} /></div>
+        </div>
+        <div className="flex gap-3">
+          <Button type="submit">{editingId ? "Update category" : "Add category"}</Button>
+          {editingId && <Button type="button" variant="outline" onClick={reset}>Cancel</Button>}
+        </div>
+      </form>
+
+      <div className="border border-border rounded-xl bg-card overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead className="bg-muted/40 text-left">
+            <tr>
+              <th className="p-3">Name</th>
+              <th className="p-3">Slug</th>
+              <th className="p-3">Description</th>
+              <th className="p-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {categories.length === 0 && (
+              <tr><td className="p-4 text-muted-foreground" colSpan={4}>No categories yet.</td></tr>
+            )}
+            {categories.map((c) => (
+              <tr key={c.id} className="border-t border-border">
+                <td className="p-3">{c.name}</td>
+                <td className="p-3 font-mono text-xs">{c.slug}</td>
+                <td className="p-3 text-muted-foreground">{c.description ?? "—"}</td>
+                <td className="p-3 space-x-2">
+                  <Button size="sm" variant="outline" onClick={() => edit(c)}>Edit</Button>
+                  <Button size="sm" variant="destructive" onClick={() => remove(c.id)}>Delete</Button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -378,6 +490,7 @@ const UsersModule = () => {
 const TABS = [
   { id: "add-product", label: "Add Product" },
   { id: "view-products", label: "View Products" },
+  { id: "categories", label: "Categories" },
   { id: "orders", label: "Check Orders" },
   { id: "users", label: "Add Users" },
 ] as const;
@@ -395,26 +508,35 @@ const AdminDashboard = ({ name }: { name: string }) => {
         <p className="text-muted-foreground mt-1">Hello {name} — manage your store below.</p>
       </div>
 
-      <div className="border-b border-border flex flex-wrap gap-1">
-        {TABS.map((t) => (
-          <button
-            key={t.id}
-            onClick={() => setTab(t.id)}
-            className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-              tab === t.id
-                ? "border-primary text-primary"
-                : "border-transparent text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_220px] gap-6">
+        <div className="min-w-0 order-2 md:order-1">
+          {tab === "add-product" && <ProductsModule mode="manage" />}
+          {tab === "view-products" && <ProductsModule mode="view" />}
+          {tab === "categories" && <CategoriesModule />}
+          {tab === "orders" && <OrdersModule />}
+          {tab === "users" && <UsersModule />}
+        </div>
 
-      {tab === "add-product" && <ProductsModule mode="manage" />}
-      {tab === "view-products" && <ProductsModule mode="view" />}
-      {tab === "orders" && <OrdersModule />}
-      {tab === "users" && <UsersModule />}
+        <aside className="order-1 md:order-2">
+          <div className="border border-border rounded-xl bg-card p-2 md:sticky md:top-20">
+            <nav className="flex md:flex-col gap-1 overflow-x-auto">
+              {TABS.map((t) => (
+                <button
+                  key={t.id}
+                  onClick={() => setTab(t.id)}
+                  className={`text-left px-4 py-2 text-sm font-medium rounded-md transition-colors whitespace-nowrap ${
+                    tab === t.id
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  }`}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </nav>
+          </div>
+        </aside>
+      </div>
     </div>
   );
 };
