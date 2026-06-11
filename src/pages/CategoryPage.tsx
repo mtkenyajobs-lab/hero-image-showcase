@@ -279,7 +279,7 @@ const CategoryPage = () => {
           )}
 
           <div className="flex-1">
-            {filteredProducts.length === 0 ? (
+            {filteredProducts.length + adminInCategory.length === 0 ? (
               <div className="text-center py-16">
                 <p className="text-muted-foreground mb-4">No products match your filters.</p>
                 <Button variant="outline" onClick={clearFilters}>
@@ -288,6 +288,31 @@ const CategoryPage = () => {
               </div>
             ) : (
               <div className="grid grid-cols-2 lg:grid-cols-3 gap-5">
+                {adminInCategory.map((p) => (
+                  <Link
+                    key={p.id}
+                    to={`/shop/${slugify(p.category)}/admin-${p.id}`}
+                    className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-shadow group"
+                  >
+                    <div className="bg-muted flex items-center justify-center aspect-square overflow-hidden">
+                      {p.image_url ? (
+                        <img
+                          src={p.image_url}
+                          alt={p.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <span className="text-xs text-muted-foreground">No image</span>
+                      )}
+                    </div>
+                    <div className="p-4 space-y-2">
+                      <h3 className="font-semibold text-sm">{p.name}</h3>
+                      <p className="text-xs text-muted-foreground line-clamp-2">{p.description}</p>
+                      <span className="font-bold text-primary">${Number(p.price).toFixed(2)}</span>
+                    </div>
+                  </Link>
+                ))}
                 {filteredProducts.map((product) => (
                   <Link
                     key={product.slug}
@@ -324,6 +349,7 @@ const CategoryPage = () => {
             )}
           </div>
         </div>
+
 
         <div className="mt-16">
           <h2 className="text-xl font-bold mb-6">Browse Other Categories</h2>
