@@ -690,7 +690,7 @@ const AdminDashboard = ({ name }: { name: string }) => {
   ] as const;
 
   return (
-    <div className="space-y-8">
+    <div className="admin-theme space-y-8">
       <div>
         <p className="text-sm text-muted-foreground">Admin account</p>
         <h1>Admin dashboard</h1>
