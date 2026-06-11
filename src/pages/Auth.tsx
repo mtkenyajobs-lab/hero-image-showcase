@@ -185,7 +185,7 @@ const Auth = () => {
               maxLength={72}
             />
           </div>
-          <Button type="submit" className="w-full rounded-full" disabled={loading}>
+          <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Please wait..." : mode === "signup" ? "Create account" : "Sign in"}
           </Button>
         </form>
