@@ -60,6 +60,7 @@ const CategoryPage = () => {
   );
   const allProducts = staticProducts;
 
+  const materials = getAllMaterials();
   const colours = getAllColours();
   const [minPrice, maxPrice] = getPriceRange();
 
