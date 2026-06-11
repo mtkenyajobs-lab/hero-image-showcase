@@ -707,17 +707,8 @@ const AdminDashboard = ({ name }: { name: string }) => {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-[1fr_240px] gap-6">
-        <div className="min-w-0 order-2 md:order-1">
-          {tab === "add-product" && <ProductsModule mode="manage" />}
-          {tab === "view-products" && <ProductsModule mode="view" />}
-          {tab === "categories" && <CategoriesModule />}
-          {tab === "orders" && <OrdersModule />}
-          {tab === "sales" && <SalesModule />}
-          {tab === "visits" && <VisitsModule />}
-          {tab === "users" && <UsersModule />}
-        </div>
-        <aside className="order-1 md:order-2">
+      <div className="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-6">
+        <aside className="order-1">
           <div className="border border-border rounded-2xl bg-card p-2 md:sticky md:top-20">
             <nav className="flex md:flex-col gap-1 overflow-x-auto">
               {TABS.map((t) => (
@@ -736,6 +727,15 @@ const AdminDashboard = ({ name }: { name: string }) => {
             </nav>
           </div>
         </aside>
+        <div className="min-w-0 order-2">
+          {tab === "add-product" && <ProductsModule mode="manage" />}
+          {tab === "view-products" && <ProductsModule mode="view" />}
+          {tab === "categories" && <CategoriesModule />}
+          {tab === "orders" && <OrdersModule />}
+          {tab === "sales" && <SalesModule />}
+          {tab === "visits" && <VisitsModule />}
+          {tab === "users" && <UsersModule />}
+        </div>
       </div>
     </div>
   );
