@@ -43,9 +43,23 @@ type SortOption = "default" | "price-asc" | "price-desc" | "rating" | "name";
 const CategoryPage = () => {
   const { category } = useParams<{ category: string }>();
   const cat = getCategoryBySlug(category || "");
-  const allProducts = getProductsByCategory(category || "");
+  const staticProducts = getProductsByCategory(category || "");
 
-  const materials = getAllMaterials();
+  const [dbCategories, setDbCategories] = useState<DbCategory[]>([]);
+  const [adminProducts, setAdminProducts] = useState<AdminProduct[]>([]);
+  useEffect(() => {
+    fetchCategories().then(setDbCategories);
+    fetchAdminProducts().then(setAdminProducts);
+  }, []);
+
+  const dbCat = dbCategories.find((c) => c.slug === category);
+  const displayName = cat?.name ?? dbCat?.name ?? category ?? "";
+  const adminInCategory = useMemo(
+    () => adminProducts.filter((p) => slugify(p.category) === category),
+    [adminProducts, category],
+  );
+  const allProducts = staticProducts;
+
   const colours = getAllColours();
   const [minPrice, maxPrice] = getPriceRange();
 
