@@ -90,18 +90,19 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-muted/30 px-4 py-12">
-      <div className="w-full max-w-md bg-card border border-border rounded-2xl shadow-sm p-8">
-        <Link to="/" className="flex justify-center mb-6">
-          <img src={logo} alt="Regal Office & Home" className="h-10" />
+      <div className="admin-theme w-full max-w-md bg-card border border-border rounded-xl shadow-sm p-8">
+        <Link to="/" className="flex justify-center mb-4">
+          <img src={logo} alt="Regal Office & Home" className="h-16" />
         </Link>
-        <h1 className="text-2xl font-bold text-center mb-2">
+        <h1 className="text-center mb-1" style={{ fontSize: "2rem" }}>
           {mode === "signup" ? "Create your account" : "Welcome back"}
         </h1>
-        <p className="text-sm text-muted-foreground text-center mb-6">
+        <p className="text-sm text-center mb-8" style={{ color: "var(--admin-muted)" }}>
           {mode === "signup"
             ? "Sign up to save your favourite pieces and track orders."
             : "Sign in to continue shopping."}
         </p>
+
 
         <Button
           type="button"
