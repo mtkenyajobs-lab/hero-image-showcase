@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Star, SlidersHorizontal, X, ChevronDown } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -11,6 +11,14 @@ import {
   getPriceRange,
   categories,
 } from "@/data/products";
+import {
+  fetchAdminProducts,
+  fetchCategories,
+  slugify,
+  type AdminProduct,
+  type DbCategory,
+} from "@/lib/adminCatalog";
+
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
