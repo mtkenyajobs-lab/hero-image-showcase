@@ -207,16 +207,16 @@ const CategoryPage = () => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{cat.name}</BreadcrumbPage>
+              <BreadcrumbPage>{displayName}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
 
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-3xl md:text-4xl font-bold">{cat.name}</h1>
+            <h1 className="text-3xl md:text-4xl font-bold">{displayName}</h1>
             <p className="text-muted-foreground mt-1">
-              {filteredProducts.length} product{filteredProducts.length !== 1 ? "s" : ""} found
+              {filteredProducts.length + adminInCategory.length} product{filteredProducts.length + adminInCategory.length !== 1 ? "s" : ""} found
             </p>
           </div>
 
