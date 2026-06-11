@@ -1,24 +1,41 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Star, ArrowLeft, ArrowRight } from "lucide-react";
 import { products } from "@/data/products";
-
-const tabs: { label: string; slug: string | null }[] = [
-  { label: "All", slug: null },
-  { label: "Office Chairs", slug: "office-chairs" },
-  { label: "Desks", slug: "desks-workstations" },
-  { label: "Conference Tables", slug: "conference-tables" },
-  { label: "Lounge", slug: "lounge-reception" },
-  { label: "Storage", slug: "storage-solutions" },
-  { label: "Accessories", slug: "accessories" },
-];
+import {
+  fetchAdminProducts,
+  fetchCategories,
+  slugify,
+  type AdminProduct,
+  type DbCategory,
+} from "@/lib/adminCatalog";
 
 const ProductsSection = () => {
-  const [activeTab, setActiveTab] = useState("Office Chairs");
-  const activeSlug = tabs.find((t) => t.label === activeTab)?.slug ?? null;
-  const visibleProducts = activeSlug
-    ? products.filter((p) => p.categorySlug === activeSlug)
-    : products;
+  const [dbCategories, setDbCategories] = useState<DbCategory[]>([]);
+  const [adminProducts, setAdminProducts] = useState<AdminProduct[]>([]);
+  const [activeSlug, setActiveSlug] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchCategories().then(setDbCategories);
+    fetchAdminProducts().then(setAdminProducts);
+  }, []);
+
+  const tabs = useMemo(
+    () => [{ label: "All", slug: null as string | null }, ...dbCategories.map((c) => ({ label: c.name, slug: c.slug }))],
+    [dbCategories],
+  );
+
+  const visibleStatic = useMemo(() => {
+    if (!activeSlug) return products;
+    return products.filter((p) => p.categorySlug === activeSlug);
+  }, [activeSlug]);
+
+  const visibleAdmin = useMemo(() => {
+    if (!activeSlug) return adminProducts;
+    return adminProducts.filter((p) => slugify(p.category) === activeSlug);
+  }, [activeSlug, adminProducts]);
+
+  const total = visibleStatic.length + visibleAdmin.length;
 
   return (
     <section className="py-16">
@@ -28,9 +45,9 @@ const ProductsSection = () => {
           {tabs.map((tab) => (
             <button
               key={tab.label}
-              onClick={() => setActiveTab(tab.label)}
+              onClick={() => setActiveSlug(tab.slug)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                activeTab === tab.label
+                activeSlug === tab.slug
                   ? "bg-foreground text-background"
                   : "border border-border text-muted-foreground hover:bg-muted"
               }`}
@@ -47,9 +64,42 @@ const ProductsSection = () => {
             <ArrowRight className="w-5 h-5" />
           </button>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-            {visibleProducts.length === 0 ? (
-              <p className="col-span-full text-center text-muted-foreground py-10">No products in this category yet.</p>
-            ) : visibleProducts.map((product) => (
+            {total === 0 && (
+              <p className="col-span-full text-center text-muted-foreground py-10">
+                No products in this category yet.
+              </p>
+            )}
+
+            {visibleAdmin.map((p) => (
+              <Link
+                key={p.id}
+                to={`/shop/${slugify(p.category)}/admin-${p.id}`}
+                className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-shadow group"
+              >
+                <div className="bg-muted flex items-center justify-center aspect-square overflow-hidden">
+                  {p.image_url ? (
+                    <img
+                      src={p.image_url}
+                      alt={p.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span className="text-xs text-muted-foreground">No image</span>
+                  )}
+                </div>
+                <div className="p-4 space-y-2">
+                  <h3 className="font-semibold text-sm">{p.name}</h3>
+                  <p className="text-xs text-muted-foreground line-clamp-2">{p.description}</p>
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-primary">${Number(p.price).toFixed(2)}</span>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground uppercase">{p.category}</p>
+                </div>
+              </Link>
+            ))}
+
+            {visibleStatic.map((product) => (
               <Link
                 key={product.slug}
                 to={`/shop/${product.categorySlug}/${product.slug}`}
