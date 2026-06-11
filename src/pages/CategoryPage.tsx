@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Star, SlidersHorizontal, X, ChevronDown } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -11,6 +11,14 @@ import {
   getPriceRange,
   categories,
 } from "@/data/products";
+import {
+  fetchAdminProducts,
+  fetchCategories,
+  slugify,
+  type AdminProduct,
+  type DbCategory,
+} from "@/lib/adminCatalog";
+
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
@@ -35,7 +43,22 @@ type SortOption = "default" | "price-asc" | "price-desc" | "rating" | "name";
 const CategoryPage = () => {
   const { category } = useParams<{ category: string }>();
   const cat = getCategoryBySlug(category || "");
-  const allProducts = getProductsByCategory(category || "");
+  const staticProducts = getProductsByCategory(category || "");
+
+  const [dbCategories, setDbCategories] = useState<DbCategory[]>([]);
+  const [adminProducts, setAdminProducts] = useState<AdminProduct[]>([]);
+  useEffect(() => {
+    fetchCategories().then(setDbCategories);
+    fetchAdminProducts().then(setAdminProducts);
+  }, []);
+
+  const dbCat = dbCategories.find((c) => c.slug === category);
+  const displayName = cat?.name ?? dbCat?.name ?? category ?? "";
+  const adminInCategory = useMemo(
+    () => adminProducts.filter((p) => slugify(p.category) === category),
+    [adminProducts, category],
+  );
+  const allProducts = staticProducts;
 
   const materials = getAllMaterials();
   const colours = getAllColours();
@@ -153,7 +176,7 @@ const CategoryPage = () => {
     </div>
   );
 
-  if (!cat) {
+  if (!cat && !dbCat) {
     return (
       <div className="min-h-screen">
         <Navbar />
@@ -169,6 +192,7 @@ const CategoryPage = () => {
     );
   }
 
+
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -183,16 +207,16 @@ const CategoryPage = () => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{cat.name}</BreadcrumbPage>
+              <BreadcrumbPage>{displayName}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
 
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-3xl md:text-4xl font-bold">{cat.name}</h1>
+            <h1 className="text-3xl md:text-4xl font-bold">{displayName}</h1>
             <p className="text-muted-foreground mt-1">
-              {filteredProducts.length} product{filteredProducts.length !== 1 ? "s" : ""} found
+              {filteredProducts.length + adminInCategory.length} product{filteredProducts.length + adminInCategory.length !== 1 ? "s" : ""} found
             </p>
           </div>
 
@@ -255,7 +279,7 @@ const CategoryPage = () => {
           )}
 
           <div className="flex-1">
-            {filteredProducts.length === 0 ? (
+            {filteredProducts.length + adminInCategory.length === 0 ? (
               <div className="text-center py-16">
                 <p className="text-muted-foreground mb-4">No products match your filters.</p>
                 <Button variant="outline" onClick={clearFilters}>
@@ -264,6 +288,31 @@ const CategoryPage = () => {
               </div>
             ) : (
               <div className="grid grid-cols-2 lg:grid-cols-3 gap-5">
+                {adminInCategory.map((p) => (
+                  <Link
+                    key={p.id}
+                    to={`/shop/${slugify(p.category)}/admin-${p.id}`}
+                    className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-shadow group"
+                  >
+                    <div className="bg-muted flex items-center justify-center aspect-square overflow-hidden">
+                      {p.image_url ? (
+                        <img
+                          src={p.image_url}
+                          alt={p.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <span className="text-xs text-muted-foreground">No image</span>
+                      )}
+                    </div>
+                    <div className="p-4 space-y-2">
+                      <h3 className="font-semibold text-sm">{p.name}</h3>
+                      <p className="text-xs text-muted-foreground line-clamp-2">{p.description}</p>
+                      <span className="font-bold text-primary">${Number(p.price).toFixed(2)}</span>
+                    </div>
+                  </Link>
+                ))}
                 {filteredProducts.map((product) => (
                   <Link
                     key={product.slug}
@@ -300,6 +349,7 @@ const CategoryPage = () => {
             )}
           </div>
         </div>
+
 
         <div className="mt-16">
           <h2 className="text-xl font-bold mb-6">Browse Other Categories</h2>
