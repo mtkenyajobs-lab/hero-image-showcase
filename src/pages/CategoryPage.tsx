@@ -176,7 +176,7 @@ const CategoryPage = () => {
     </div>
   );
 
-  if (!cat) {
+  if (!cat && !dbCat) {
     return (
       <div className="min-h-screen">
         <Navbar />
@@ -191,6 +191,7 @@ const CategoryPage = () => {
       </div>
     );
   }
+
 
   return (
     <div className="min-h-screen">
