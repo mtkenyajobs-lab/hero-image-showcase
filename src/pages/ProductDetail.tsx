@@ -7,15 +7,57 @@ import { getProductBySlug, getRelatedProducts, type Product } from "@/data/produ
 import { trackVisit, trackSale, createOrder } from "@/lib/tracking";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { slugify } from "@/lib/adminCatalog";
 
 const ProductDetail = () => {
-  const { slug } = useParams<{ category: string; slug: string }>();
-  const product = slug ? getProductBySlug(slug) : undefined;
+  const { slug, category } = useParams<{ category: string; slug: string }>();
+  const staticProduct = slug ? getProductBySlug(slug) : undefined;
+  const [adminProduct, setAdminProduct] = useState<Product | undefined>(undefined);
+  const [loadingAdmin, setLoadingAdmin] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
   const [showFullDesc, setShowFullDesc] = useState(false);
   const [recentlyViewed, setRecentlyViewed] = useState<Product[]>([]);
   const [placing, setPlacing] = useState(false);
   const { user } = useAuth();
+
+  // Load admin product when slug is `admin-<id>` and no static match
+  useEffect(() => {
+    if (staticProduct || !slug?.startsWith("admin-")) return;
+    const id = slug.replace(/^admin-/, "");
+    setLoadingAdmin(true);
+    (async () => {
+      const { data } = await supabase
+        .from("admin_products")
+        .select("id,name,category,price,description,image_url,stock")
+        .eq("id", id)
+        .maybeSingle();
+      if (data) {
+        const priceNum = Number(data.price) || 0;
+        setAdminProduct({
+          slug: `admin-${data.id}`,
+          name: data.name,
+          category: data.category,
+          categorySlug: slugify(data.category),
+          desc: data.description ?? "",
+          price: `$${priceNum.toFixed(2)}`,
+          oldPrice: `$${priceNum.toFixed(2)}`,
+          priceNum,
+          discount: "",
+          rating: 5,
+          image: data.image_url ?? "/placeholder.svg",
+          images: [data.image_url ?? "/placeholder.svg"],
+          badge: "",
+          badgeUrgent: false,
+          specs: { warranty: "1 year" },
+          delivery: "Ships within 3-7 business days.",
+        } as unknown as Product);
+      }
+      setLoadingAdmin(false);
+    })();
+  }, [slug, staticProduct]);
+
+  const product = staticProduct ?? adminProduct;
 
   useEffect(() => {
     if (!product) return;
@@ -39,13 +81,18 @@ const ProductDetail = () => {
       <div className="min-h-screen">
         <Navbar />
         <div className="container py-32 text-center">
-          <h1 className="text-3xl font-bold mb-4">Product Not Found</h1>
-          <Link to="/" className="text-primary underline">Back to Home</Link>
+          <h1 className="text-3xl font-bold mb-4">
+            {loadingAdmin ? "Loading product..." : "Product Not Found"}
+          </h1>
+          {!loadingAdmin && (
+            <Link to="/" className="text-primary underline">Back to Home</Link>
+          )}
         </div>
         <Footer />
       </div>
     );
   }
+
 
   const relatedProducts = getRelatedProducts(product.slug);
   const whatsappMessage = encodeURIComponent(`Hi, I'm interested in the ${product.name} (${product.price}). Could you share more details?`);
