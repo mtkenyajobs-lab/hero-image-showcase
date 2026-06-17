@@ -12,6 +12,7 @@ const ProductDetail = () => {
   const { slug } = useParams<{ category: string; slug: string }>();
   const product = slug ? getProductBySlug(slug) : undefined;
   const [selectedImage, setSelectedImage] = useState(0);
+  const [showFullDesc, setShowFullDesc] = useState(false);
   const [recentlyViewed, setRecentlyViewed] = useState<Product[]>([]);
   const [placing, setPlacing] = useState(false);
   const { user } = useAuth();
@@ -67,7 +68,12 @@ const ProductDetail = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
           {/* Image gallery */}
           <div className="space-y-4">
-            <div className="bg-muted rounded-2xl overflow-hidden aspect-square flex items-center justify-center relative">
+            <button
+              type="button"
+              onClick={() => setShowFullDesc((v) => !v)}
+              className="bg-muted rounded-2xl overflow-hidden aspect-square flex items-center justify-center relative w-full cursor-zoom-in"
+              aria-label="Toggle extended description"
+            >
               <img
                 src={product.images[selectedImage]}
                 alt={product.name}
@@ -77,7 +83,10 @@ const ProductDetail = () => {
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-10">
                 <span className="text-6xl font-display font-bold text-foreground rotate-[-30deg]">REGAL</span>
               </div>
-            </div>
+              <span className="absolute bottom-3 right-3 bg-background/90 text-foreground text-xs font-medium px-2.5 py-1 rounded-full shadow">
+                {showFullDesc ? "Hide details" : "Click for more details"}
+              </span>
+            </button>
             <div className="flex gap-3">
               {product.images.map((img, i) => (
                 <button
@@ -114,6 +123,23 @@ const ProductDetail = () => {
             </div>
 
             <p className="text-muted-foreground leading-relaxed">{product.desc}</p>
+
+            {showFullDesc && (
+              <div className="bg-muted/40 border border-border rounded-xl p-5 space-y-3 animate-in fade-in slide-in-from-top-2">
+                <h3 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground">Extended Details</h3>
+                <p className="text-sm text-foreground/90 leading-relaxed">
+                  {product.name} is crafted with premium materials and built to support long working hours.
+                  Designed for modern offices, homes, and commercial spaces, it combines durability, ergonomic comfort,
+                  and refined aesthetics. Each unit undergoes strict quality checks and ships with a full manufacturer warranty.
+                </p>
+                <ul className="text-sm text-foreground/80 list-disc pl-5 space-y-1">
+                  <li>Premium build with reinforced framework</li>
+                  <li>Ergonomic design suited for 8+ hour daily use</li>
+                  <li>Easy assembly with included hardware and guide</li>
+                  <li>Backed by Regal's nationwide after-sales support</li>
+                </ul>
+              </div>
+            )}
 
             {/* Pricing */}
             <div className="flex items-baseline gap-3">

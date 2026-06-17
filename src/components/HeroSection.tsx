@@ -1,20 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import heroImage from "@/assets/hero-chair.png";
+import furnitureImage from "@/assets/cat-office.jpg";
 import workstationImage from "@/assets/workstation.jpg";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const slides = [
-  {
-    image: heroImage,
-    alt: "Man sitting in a premium office chair",
-    label: "Deal of the Day",
-    titleLine1: <><span className="font-display font-extrabold">ELEVATE</span> <span className="font-display">YOUR</span></>,
-    titleLine2: <><span className="font-display">WORK </span><span className="font-display font-extrabold text-mustard">SPACE</span></>,
-    description: "The Ariel MeshBack Swivel Chair is a modern, stylish task chair designed for home or commercial offices, featuring a breathable mesh back, padded mesh seat, and fixed loop arms. It offers ergonomic support with integrated lumbar shaping, a single-lever tilt mechanism, and height adjustment, supporting up to 150kg (23.5 stone) and designed for 8-hour daily use.",
-    product: "Ariel MeshBack Swivel Chair",
-    price: "$500",
-  },
   {
     image: workstationImage,
     alt: "Modern ergonomic workstation setup",
@@ -24,6 +14,16 @@ const slides = [
     description: "A complete ergonomic workstation designed for productivity and comfort. Premium desk, adjustable chair, and thoughtful accessories create the perfect workspace.",
     product: "Ergonomic Workstation Bundle",
     price: "$4,500",
+  },
+  {
+    image: furnitureImage,
+    alt: "Premium office furniture collection",
+    label: "Featured Collection",
+    titleLine1: <><span className="font-display font-extrabold">PREMIUM</span> <span className="font-display">OFFICE</span></>,
+    titleLine2: <><span className="font-display">FURNITURE </span><span className="font-display font-extrabold text-mustard">COLLECTION</span></>,
+    description: "Discover our curated collection of executive desks, ergonomic chairs, and bespoke storage — crafted to elevate every modern workspace with timeless design and lasting quality.",
+    product: "Executive Furniture Range",
+    price: "$1,200",
   },
 ];
 
